@@ -10,8 +10,8 @@ logger = logging.getLogger(__name__)
 @tool
 @log_io
 def bash_tool(
-    cmd: Annotated[str, "The bash command to be executed."],
-    timeout: Annotated[int, "Maximum time in seconds for the command to complete."] = 120
+        cmd: Annotated[str, "The bash command to be executed."],
+        timeout: Annotated[int, "Maximum time in seconds for the command to complete."] = 120
 ):
     """Use this to execute bash command and do necessary operations."""
     logger.info(f"Executing Bash Command: {cmd} with timeout {timeout}s")
