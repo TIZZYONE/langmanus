@@ -130,3 +130,6 @@ class BrowserTool(BaseTool):
 
 BrowserTool = create_logged_tool(BrowserTool)
 browser_tool = BrowserTool()
+
+if __name__ == "__main__":
+    browser_tool._run(instruction="go to github.com and search langmanus")
