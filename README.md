@@ -1,4 +1,4 @@
-# LangManus
+# 🦜🤖 LangManus
 
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -11,14 +11,20 @@
 
 LangManus is a community-driven AI automation framework that builds upon the incredible work of the open source community. Our goal is to combine language models with specialized tools for tasks like web search, crawling, and Python code execution, while giving back to the community that made this possible.
 
-## Demo Video
+## Demo
 
-> **Task**: Calculate the influence index of DeepSeek R1 on HuggingFace. This index can be designed by considering a weighted sum of factors such as followers, downloads, and likes.
+**Task**: Calculate the influence index of DeepSeek R1 on HuggingFace. This index can be designed using a weighted sum of factors such as followers, downloads, and likes.
+
+**LangManus's Fully Automated Plan and Solution**:
+1. Gather the latest information about "DeepSeek R1", "HuggingFace", and related topics through online searches.
+2. Interact with a Chromium instance to visit the HuggingFace official website, search for "DeepSeek R1" and retrieve the latest data, including followers, likes, downloads, and other relevant metrics.
+3. Find formulas for calculating model influence using search engines and web scraping.
+4. Use Python to compute the influence index of DeepSeek R1 based on the collected data.
+5. Present a comprehensive report to the user.
 
 ![Demo](./assets/demo.gif)
 
 - [View on YouTube](https://youtu.be/sZCHqrQBUGk)
-- [Download Video](https://github.com/langmanus/langmanus/blob/main/assets/demo.mp4)
 
 ## Table of Contents
 
@@ -355,6 +361,25 @@ LangManus provides a default web UI.
 
 Please refer to the [langmanus/langmanus-web-ui](https://github.com/langmanus/langmanus-web) project for more details.
 
+## Docker Compose (include both backend and frontend)
+
+LangManus provides a docker-compose setup to easily run both the backend and frontend together:
+
+```bash
+# Start both backend and frontend
+docker-compose up -d
+
+# The backend will be available at http://localhost:8000
+# The frontend will be available at http://localhost:3000, which could be accessed through web browser
+```
+
+This will:
+1. Build and start the LangManus backend container
+2. Build and start the LangManus web UI container
+3. Connect them using a shared network
+
+** Make sure you have your `.env` file prepared with the necessary API keys before starting the services. **
+
 ## Development
 
 ### Testing
@@ -401,3 +426,10 @@ This project is open source and available under the [MIT License](LICENSE).
 ## Acknowledgments
 
 Special thanks to all the open source projects and contributors that make LangManus possible. We stand on the shoulders of giants.
+
+In particular, we want to express our deep appreciation for:
+- [LangChain](https://github.com/langchain-ai/langchain) for their exceptional framework that powers our LLM interactions and chains
+- [LangGraph](https://github.com/langchain-ai/langgraph) for enabling our sophisticated multi-agent orchestration
+- [Browser-use](https://pypi.org/project/browser-use/) for control browser
+
+These amazing projects form the foundation of LangManus and demonstrate the power of open source collaboration.

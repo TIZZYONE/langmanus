@@ -1,4 +1,4 @@
-# LangManus
+# 🦜🤖 LangManus
 
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -18,7 +18,6 @@ LangManusは、オープンソースコミュニティの素晴らしい仕事�
 ![Demo](./assets/demo.gif)
 
 - [YouTubeで視聴](https://youtu.be/sZCHqrQBUGk)
-- [ビデオをダウンロード](https://github.com/langmanus/langmanus/blob/main/assets/demo.mp4)
 
 ## 目次
 
@@ -343,6 +342,25 @@ LangManusはデフォルトのWeb UIを提供します。
 
 詳細については、[langmanus/langmanus-web-ui](https://github.com/langmanus/langmanus-web)プロジェクトを参照してください。
 
+## Docker Compose (バックエンドとフロントエンドを含む)
+
+LangManusは、バックエンドとフロントエンドの両方を簡単に実行するためのdocker-compose設定を提供しています：
+
+```bash
+# バックエンドとフロントエンドを起動
+docker-compose up -d
+
+# バックエンドは http://localhost:8000 で利用可能
+# フロントエンドは http://localhost:3000 で利用可能, ブラウザでアクセス可能
+```
+
+これにより：
+1. LangManusバックエンドコンテナをビルドして起動
+2. LangManus Web UIコンテナをビルドして起動
+3. 共有ネットワークを使用してそれらを接続
+
+サービスを開始する前に、必要なAPIキーを含む`.env`ファイルが準備されていることを確認してください。
+
 ## 開発
 
 ### テスト
@@ -382,10 +400,17 @@ make format
 
 このプロジェクトはオープンソースであり、[MITライセンス](LICENSE)の下で利用可能です。
 
+## 謝辞
+
+LangManusを可能にするすべてのオープンソースプロジェクトと貢献者に特別な感謝を捧げます。私たちは巨人の肩の上に立っています。
+
+特に以下のプロジェクトに深い感謝を表します：
+- [LangChain](https://github.com/langchain-ai/langchain)：私たちのLLM相互作用とチェーンを支える優れたフレームワーク
+- [LangGraph](https://github.com/langchain-ai/langgraph)：洗練されたマルチエージェントオーケストレーションを実現
+- [Browser-use](https://pypi.org/project/browser-use/)：ブラウザ制御を提供
+
+これらの素晴らしいプロジェクトはLangManusの基盤を形成し、オープンソースコラボレーションの力を示しています。
+
 ## スター履歴
 
 [![Star History Chart](https://api.star-history.com/svg?repos=langmanus/langmanus&type=Date)](https://www.star-history.com/#langmanus/langmanus&Date)
-
-## 謝辞
-
-LangManusを可能にするすべてのオープンソースプロジェクトと貢献者に特別な感謝を捧げます。私たちは巨人の肩に立っています。

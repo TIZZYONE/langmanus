@@ -2,7 +2,7 @@ import logging
 from typing import Optional
 import asyncio
 
-from src.config import TEAM_MEMBERS
+from src.config import TEAM_MEMBER_CONFIGRATIONS, TEAM_MEMBERS
 from src.graph import build_graph
 from src.tools.browser import browser_tool
 from langchain_community.adapters.openai import convert_message_to_dict
@@ -26,7 +26,6 @@ logger = logging.getLogger(__name__)
 graph = build_graph()
 
 # Cache for coordinator messages
-coordinator_cache = []
 MAX_CACHE_SIZE = 3
 
 # Global variable to track current browser tool instance
@@ -79,17 +78,18 @@ async def run_agent_workflow(
     streaming_llm_agents = [*team_members, "planner", "coordinator"]
 
     # Reset coordinator cache at the start of each workflow
-    global coordinator_cache, current_browser_tool
+    global current_browser_tool
     coordinator_cache = []
     current_browser_tool = browser_tool
-    global is_handoff_case
     is_handoff_case = False
+    is_workflow_triggered = False
 
     try:
         async for event in graph.astream_events(
             {
                 # Constants
                 "TEAM_MEMBERS": team_members,
+                "TEAM_MEMBER_CONFIGRATIONS": TEAM_MEMBER_CONFIGRATIONS,
                 # Runtime Variables
                 "messages": user_input_messages,
                 "deep_thinking_mode": deep_thinking_mode,
@@ -115,6 +115,7 @@ async def run_agent_workflow(
 
             if kind == "on_chain_start" and name in streaming_llm_agents:
                 if name == "planner":
+                    is_workflow_triggered = True
                     yield {
                         "event": "start_of_workflow",
                         "data": {
@@ -234,7 +235,7 @@ async def run_agent_workflow(
             await current_browser_tool.terminate()
         current_browser_tool = None
 
-    if is_handoff_case:
+    if is_workflow_triggered:
         # TODO: remove messages attributes after Frontend being compatible with final_session_state event.
         yield {
             "event": "end_of_workflow",
