@@ -16,4 +16,4 @@ search_tool = LoggedTavilySearch(name="tavily_search", max_results=MAX_RESULTS)
 
 # Initialize Bing search tool with logging
 # LoggedBaiduSearch = create_logged_tool(BingSearchTool)
-# search_tool = LoggedBaiduSearch(name="baidu_search", max_results=MAX_RESULTS)
+# search_tool = LoggedBaiduSearch(name="bing_search", max_results=MAX_RESULTS)
