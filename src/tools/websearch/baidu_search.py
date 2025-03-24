@@ -6,46 +6,52 @@ from bs4 import BeautifulSoup
 from langchain.tools import BaseTool
 
 logger = logging.getLogger(__name__)
-BAIDU_MAX_RESULTS =10
+BAIDU_MAX_RESULTS = 10
+
 
 class BaiduSearchTool(BaseTool):
     name: str = "baidu_search"
-    description: str = "Search the internet using Baidu search engine. Input should be a search query."
+    description: str = (
+        "Search the internet using Baidu search engine. Input should be a search query."
+    )
     max_results: int = BAIDU_MAX_RESULTS
 
-    def __init__(self, name,max_results: int = BAIDU_MAX_RESULTS,):
+    def __init__(
+        self,
+        name,
+        max_results: int = BAIDU_MAX_RESULTS,
+    ):
         super().__init__()
         self.name = name
         self.max_results = max_results
 
-
     def _run(self, query: str) -> List[Dict[str, Any]]:
         """
         Run Baidu search with the given query.
-        
+
         Args:
             query: The search query string
-            
+
         Returns:
             List of search results, each containing title, link, and snippet
         """
         try:
             logger.info(f"Running Baidu search for query: {query}")
-            
+
             # Use the search_baidu method with the query and max_results
             results = self.search_baidu(query, num_results=self.max_results)
-            
+
             if not results:
                 logger.warning(f"No results found for query: {query}")
                 return []
-                
+
             return results
-            
+
         except Exception as e:
             logger.error(f"Error during Baidu search: {str(e)}")
             return []
 
-    def search_baidu(self,keyword, num_results=10, debug=0):
+    def search_baidu(self, keyword, num_results=10, debug=0):
         """
         Search using keywords
         :param keyword: Search keyword
@@ -66,8 +72,11 @@ class BaiduSearchTool(BaseTool):
             if data:
                 list_result += data
                 if debug:
-                    print("---searching[{}], finish parsing page {}, results number={}: ".format(keyword, page,
-                                                                                                 len(data)))
+                    print(
+                        "---searching[{}], finish parsing page {}, results number={}: ".format(
+                            keyword, page, len(data)
+                        )
+                    )
                     for d in data:
                         print(str(d))
 
@@ -78,22 +87,32 @@ class BaiduSearchTool(BaseTool):
             page += 1
 
         if debug:
-            print("\n---search [{}] finished. total results number={}!".format(keyword, len(list_result)))
-        return list_result[: num_results] if len(list_result) > num_results else list_result
+            print(
+                "\n---search [{}] finished. total results number={}!".format(
+                    keyword, len(list_result)
+                )
+            )
+        return (
+            list_result[:num_results] if len(list_result) > num_results else list_result
+        )
 
-    def parse_html(self,url, rank_start=0, debug=0):
+    def parse_html(self, url, rank_start=0, debug=0):
         """
         Parse and process search results
         :param url: URL to scrape
         :return: List of results and next page URL
         """
         HEADERS = {
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
+            "Accept": (
+                "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8"
+            ),
             "Content-Type": "application/x-www-form-urlencoded",
-            "User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
+            ),
             "Referer": "https://www.baidu.com/",
             "Accept-Encoding": "gzip, deflate",
-            "Accept-Language": "zh-CN,zh;q=0.9"
+            "Accept-Language": "zh-CN,zh;q=0.9",
         }
         try:
             session = requests.Session()
@@ -114,19 +133,19 @@ class BaiduSearchTool(BaseTool):
                 if "c-container" not in class_list:
                     continue
 
-                title = ''
-                url = ''
-                abstract = ''
+                title = ""
+                url = ""
+                abstract = ""
                 try:
                     # Iterate through all found results to get title and summary content (within 50 characters)
                     if "xpath-log" in class_list:
                         if div.h3:
                             title = div.h3.text.strip()
-                            url = div.h3.a['href'].strip()
+                            url = div.h3.a["href"].strip()
                         else:
                             title = div.text.strip().split("\n", 1)[0]
                             if div.a:
-                                url = div.a['href'].strip()
+                                url = div.a["href"].strip()
 
                         if div.find("div", class_="c-abstract"):
                             abstract = div.find("div", class_="c-abstract").text.strip()
@@ -137,10 +156,10 @@ class BaiduSearchTool(BaseTool):
                     elif "result-op" in class_list:
                         if div.h3:
                             title = div.h3.text.strip()
-                            url = div.h3.a['href'].strip()
+                            url = div.h3.a["href"].strip()
                         else:
                             title = div.text.strip().split("\n", 1)[0]
-                            url = div.a['href'].strip()
+                            url = div.a["href"].strip()
                         if div.find("div", class_="c-abstract"):
                             abstract = div.find("div", class_="c-abstract").text.strip()
                         elif div.div:
@@ -153,7 +172,9 @@ class BaiduSearchTool(BaseTool):
                                 if len(div.contents) >= 1:
                                     title = div.h3.text.strip()
                                     if div.find("div", class_="c-abstract"):
-                                        abstract = div.find("div", class_="c-abstract").text.strip()
+                                        abstract = div.find(
+                                            "div", class_="c-abstract"
+                                        ).text.strip()
                                     elif div.div:
                                         abstract = div.div.text.strip()
                                     else:
@@ -162,12 +183,14 @@ class BaiduSearchTool(BaseTool):
                                 if len(div.contents) >= 2:
                                     if div.h3:
                                         title = div.h3.text.strip()
-                                        url = div.h3.a['href'].strip()
+                                        url = div.h3.a["href"].strip()
                                     else:
                                         title = div.contents[0].text.strip()
-                                        url = div.h3.a['href'].strip()
+                                        url = div.h3.a["href"].strip()
                                     if div.find("div", class_="c-abstract"):
-                                        abstract = div.find("div", class_="c-abstract").text.strip()
+                                        abstract = div.find(
+                                            "div", class_="c-abstract"
+                                        ).text.strip()
                                     elif div.div:
                                         abstract = div.div.text.strip()
                                     else:
@@ -175,19 +198,23 @@ class BaiduSearchTool(BaseTool):
                         else:
                             if div.h3:
                                 title = div.h3.text.strip()
-                                url = div.h3.a['href'].strip()
+                                url = div.h3.a["href"].strip()
                             else:
                                 title = div.contents[0].text.strip()
-                                url = div.h3.a['href'].strip()
+                                url = div.h3.a["href"].strip()
                             if div.find("div", class_="c-abstract"):
-                                abstract = div.find("div", class_="c-abstract").text.strip()
+                                abstract = div.find(
+                                    "div", class_="c-abstract"
+                                ).text.strip()
                             elif div.div:
                                 abstract = div.div.text.strip()
                             else:
                                 abstract = div.text.strip()
                 except Exception as e:
                     if debug:
-                        print("Caught exception during parsing page html, e={}".format(e))
+                        print(
+                            "Caught exception during parsing page html, e={}".format(e)
+                        )
                     continue
                 ABSTRACT_MAX_LENGTH = 300  # abstract max length
                 if ABSTRACT_MAX_LENGTH and len(abstract) > ABSTRACT_MAX_LENGTH:
@@ -218,8 +245,7 @@ class BaiduSearchTool(BaseTool):
         return self._run(query)
 
 
-
-#test
+# test
 if __name__ == "__main__":
     baidu_search = BaiduSearchTool(name="baidu_search", max_results=10)
     result = baidu_search.search_baidu("python")

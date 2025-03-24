@@ -2,7 +2,7 @@ import logging
 from langchain_community.tools.tavily_search import TavilySearchResults
 from src.config.tools import MAX_RESULTS
 from .decorators import create_logged_tool
-from .websearch import BaiduSearchTool,BingSearchTool
+from .websearch import BaiduSearchTool, BingSearchTool
 
 logger = logging.getLogger(__name__)
 
