@@ -120,7 +120,7 @@ class ChatLiteLLMV2(ChatLiteLLM):
                 )
             tool_name = convert_to_openai_tool(schema)["function"]["name"]
             bind_kwargs = self._filter_disabled_params(
-                tool_choice="auto",
+                tool_choice={"type": "function", "function": {"name": tool_name}},
                 parallel_tool_calls=False,
                 strict=strict,
                 ls_structured_output_format={
@@ -214,6 +214,7 @@ class ChatLiteLLMV2(ChatLiteLLM):
             "tools",
             "tool-use",
             "response_format",
-            "parallel_tool_calls",
         }
+        if self.model and str(self.model).startswith("openai"):
+            supported_params.add("parallel_tool_calls")
         return supported_params

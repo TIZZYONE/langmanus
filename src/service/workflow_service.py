@@ -230,10 +230,6 @@ async def run_agent_workflow(
         if current_browser_tool:
             await current_browser_tool.terminate()
         raise
-    finally:
-        if current_browser_tool:
-            await current_browser_tool.terminate()
-        current_browser_tool = None
 
     if is_workflow_triggered:
         # TODO: remove messages attributes after Frontend being compatible with final_session_state event.
