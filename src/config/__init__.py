@@ -25,7 +25,7 @@ from .env import (
     CHROME_PROXY_USERNAME,
     CHROME_PROXY_PASSWORD,
 )
-from .tools import TAVILY_MAX_RESULTS, BROWSER_HISTORY_DIR
+from .tools import MAX_RESULTS, BROWSER_HISTORY_DIR
 from .loader import load_yaml_config
 
 # Team configuration
@@ -91,7 +91,7 @@ __all__ = [
     "VL_AZURE_DEPLOYMENT",
     # Other configurations
     "TEAM_MEMBERS",
-    "TEAM_MEMBER_CONFIGRATIONS" "TAVILY_MAX_RESULTS",
+    "TEAM_MEMBER_CONFIGRATIONS" "MAX_RESULTS",
     "CHROME_INSTANCE_PATH",
     "CHROME_HEADLESS",
     "CHROME_PROXY_SERVER",
