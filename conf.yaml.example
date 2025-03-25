@@ -19,3 +19,6 @@ VISION_MODEL:
   api_base: $AZURE_API_BASE
   api_version: $AZURE_API_VERSION
   api_key: $AZURE_API_KEY
+
+# Search Engine Config
+SEARCH_ENGINE: "baidu"  # Options: "tavily", "baidu", "bing"

@@ -27,6 +27,15 @@ from .env import (
 )
 from .tools import MAX_RESULTS, BROWSER_HISTORY_DIR
 from .loader import load_yaml_config
+from pathlib import Path
+
+conf = load_yaml_config(
+        str((Path(__file__).parent.parent.parent / "conf.yaml").resolve())
+    )
+
+# Load search engine configuration
+SEARCH_ENGINE = conf.get("SEARCH_ENGINE", "tavily")
+# SEARCH_ENGINE = "bing"
 
 # Team configuration
 TEAM_MEMBER_CONFIGRATIONS = {
@@ -103,4 +112,6 @@ __all__ = [
     "AZURE_API_BASE",
     "AZURE_API_KEY",
     "AZURE_API_VERSION",
+    # Search configuration
+    "SEARCH_ENGINE",
 ]
