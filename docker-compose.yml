@@ -16,7 +16,7 @@ services:
 
   frontend:
     build:
-      context: https://github.com/langmanus/langmanus-web.git
+      context: https://github.com/langmanus/langmanus-web.git#main
       dockerfile: Dockerfile
       args:
         - NEXT_PUBLIC_API_URL=http://localhost:8000/api

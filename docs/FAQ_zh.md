@@ -28,6 +28,31 @@
 
 ---
 
+### 如何使用 OpenAI-Compatible 模型？
+
+LangManus 支持集成 OpenAI-Compatible 模型，这些模型实现了 OpenAI API 规范。这包括各种提供与 OpenAI 格式兼容的 API 端点的开源和商业模型。您可以参考 [litellm OpenAI-Compatible](https://docs.litellm.ai/docs/providers/openai_compatible) 获取详细文档。
+以下是使用 OpenAI-Compatible 模型的 `conf.yaml` 配置示例：
+
+```yaml
+# 阿里云模型示例
+BASIC_MODEL:
+  model: "openai/qwen-max-latest"
+  api_key: YOUR_API_KEY
+  api_base: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
+# slliconflow 模型示例
+BASIC_MODEL:
+  model: "openai/Qwen/QwQ-32B"
+  api_key: YOU_API_KEY
+  api_base: "https://api.siliconflow.cn/v1"
+
+# deepseek 模型示例
+BASIC_MODEL:
+  model: "openai/deepseek-chat"
+  api_key: YOU_API_KEY
+  api_base: "https://api.deepseek.com"
+```
+
 ### 如何使用 Ollama 模型？
 
 LangManus 支持集成 Ollama 模型。您可以参考[litellm Ollama](https://docs.litellm.ai/docs/providers/ollama)。<br>
