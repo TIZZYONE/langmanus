@@ -27,6 +27,31 @@ You can switch the model in use by modifying the `conf.yaml` file in the root di
 
 ---
 
+### How to use OpenAI-Compatible models?
+
+LangManus supports integration with OpenAI-Compatible models, which are models that implement the OpenAI API specification. This includes various open-source and commercial models that provide API endpoints compatible with the OpenAI format. You can refer to [litellm OpenAI-Compatible](https://docs.litellm.ai/docs/providers/openai_compatible) for detailed documentation.
+The following is a configuration example of `conf.yaml` for using OpenAI-Compatible models:
+
+```yaml
+# An exmaple for Aliyun models
+BASIC_MODEL:
+  model: "openai/qwen-max-latest"
+  api_key: YOUR_API_KEY
+  api_base: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+
+# An exmaple for slliconflow models
+BASIC_MODEL:
+  model: "openai/Qwen/QwQ-32B"
+  api_key: YOU_API_KEY
+  api_base: "https://api.siliconflow.cn/v1"
+
+# An exmaple for deepseek models
+BASIC_MODEL:
+  model: "openai/deepseek-chat"
+  api_key: YOU_API_KEY
+  api_base: "https://api.deepseek.com"
+```
+
 ### How to use Ollama models?
 
 LangManus supports the integration of Ollama models. You can refer to [litellm Ollama](https://docs.litellm.ai/docs/providers/ollama). <br>
