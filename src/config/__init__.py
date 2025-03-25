@@ -30,8 +30,8 @@ from .loader import load_yaml_config
 from pathlib import Path
 
 conf = load_yaml_config(
-        str((Path(__file__).parent.parent.parent / "conf.yaml").resolve())
-    )
+    str((Path(__file__).parent.parent.parent / "conf.yaml").resolve())
+)
 
 # Load search engine configuration
 SEARCH_ENGINE = conf.get("SEARCH_ENGINE", "tavily")

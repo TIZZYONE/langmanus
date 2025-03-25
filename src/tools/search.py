@@ -17,4 +17,3 @@ elif SEARCH_ENGINE == "bing":
     search_tool = LoggedBingSearch(name="bing_search", max_results=MAX_RESULTS)
 else:
     raise ValueError(f"Unsupported search engine: {SEARCH_ENGINE}")
-
