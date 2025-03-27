@@ -15,9 +15,9 @@ class BaiduSearchTool(BaseTool):
     max_results: int = BAIDU_MAX_RESULTS
 
     def __init__(
-            self,
-            name,
-            max_results: int = BAIDU_MAX_RESULTS,
+        self,
+        name,
+        max_results: int = BAIDU_MAX_RESULTS,
     ):
         super().__init__()
         self.name = name
@@ -40,8 +40,14 @@ class BaiduSearchTool(BaseTool):
             if not results:
                 logger.warning(f"No results found for query: {query}")
                 return []
-            format_results = [{"title": result["title"], "content": result["abstract"], "link": result["url"]} for
-                              result in results]
+            format_results = [
+                {
+                    "title": result["title"],
+                    "content": result["abstract"],
+                    "link": result["url"],
+                }
+                for result in results
+            ]
 
             return format_results
 
