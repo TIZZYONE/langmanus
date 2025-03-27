@@ -35,6 +35,7 @@ conf = load_yaml_config(
 
 # Load search engine configuration
 SEARCH_ENGINE = conf.get("SEARCH_ENGINE", "tavily")
+
 # SEARCH_ENGINE = "bing"
 
 # Team configuration
