@@ -2,7 +2,7 @@ from langchain_community.tools.tavily_search import TavilySearchResults
 from src.config.tools import MAX_RESULTS
 from src.config import SEARCH_ENGINE
 from .decorators import create_logged_tool
-from .websearch import BaiduSearchTool,GoogleSearchTool
+from .websearch import BaiduSearchTool, GoogleSearchTool
 
 SEARCH_TOOLS = {
     "tavily": TavilySearchResults,

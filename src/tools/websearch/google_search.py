@@ -13,6 +13,7 @@ GOOGLE_MAX_RESULTS = 10
 # 环境变量中配置API密钥
 os.environ["SERPER_API_KEY"] = "a043e5913a4edd809010ca6d2789cbb2882e76e9"
 
+
 class GoogleSearchTool(BaseTool):
     name: str = "google_search"
     description: str = (
@@ -21,9 +22,9 @@ class GoogleSearchTool(BaseTool):
     max_results: int = GOOGLE_MAX_RESULTS
 
     def __init__(
-            self,
-            name,
-            max_results: int = GOOGLE_MAX_RESULTS,
+        self,
+        name,
+        max_results: int = GOOGLE_MAX_RESULTS,
     ):
         super().__init__()
         self.name = name
@@ -42,12 +43,20 @@ class GoogleSearchTool(BaseTool):
         try:
             logger.info(f"Running Google search for query: {query}")
             # Use the search_baidu method with the query and max_results
-            results = GoogleSerperAPIWrapper().results(query=query, num_results=self.max_results)
+            results = GoogleSerperAPIWrapper().results(
+                query=query, num_results=self.max_results
+            )
             if not results:
                 logger.warning(f"No results found for query: {query}")
                 return []
-            format_results = [{"title": result["title"], "content": result["snippet"], "link": result["link"]} for
-                              result in results['organic']]
+            format_results = [
+                {
+                    "title": result["title"],
+                    "content": result["snippet"],
+                    "link": result["link"],
+                }
+                for result in results["organic"]
+            ]
 
             return format_results
 
@@ -68,12 +77,6 @@ if __name__ == "__main__":
     google_search = GoogleSearchTool(name="google_search", max_results=10)
     result = google_search._run("python")
     print(result)
-
-
-
-
-
-
 
 
 # from serpapi.google_search import GoogleSearch
