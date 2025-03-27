@@ -61,7 +61,7 @@ class ChatMessage(BaseModel):
 
 
 class ChatRequest(BaseModel):
-    messages: List[ChatMessage] = Field(..., description="The conversation history")
+    messages: List[ChatMessage] = Field(..., description="The user input")
     debug: Optional[bool] = Field(False, description="Whether to enable debug logging")
     deep_thinking_mode: Optional[bool] = Field(
         False, description="Whether to enable deep thinking mode"
@@ -70,6 +70,9 @@ class ChatRequest(BaseModel):
         False, description="Whether to search before planning"
     )
     team_members: Optional[list] = Field(None, description="enabled team members")
+    thread_id: Optional[str] = Field(
+        "default", description="a specifc conversation identifier"
+    )
 
 
 @app.post("/api/chat/stream")
@@ -116,6 +119,7 @@ async def chat_endpoint(request: ChatRequest, req: Request):
                     request.deep_thinking_mode,
                     request.search_before_planning,
                     request.team_members,
+                    request.thread_id,
                 ):
                     # Check if client is still connected
                     if await req.is_disconnected():

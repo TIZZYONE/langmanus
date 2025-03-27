@@ -37,17 +37,17 @@ def run_agent_workflow(user_input: str, debug: bool = False):
         enable_debug_logging()
 
     logger.info(f"Starting workflow with user input: {user_input}")
-    result = graph.invoke(
-        {
-            # Constants
-            "TEAM_MEMBERS": TEAM_MEMBERS,
-            "TEAM_MEMBER_CONFIGRATIONS": TEAM_MEMBER_CONFIGRATIONS,
-            # Runtime Variables
-            "messages": [{"role": "user", "content": user_input}],
-            "deep_thinking_mode": True,
-            "search_before_planning": True,
-        }
-    )
+    initial_state = {
+        # Constants
+        "TEAM_MEMBERS": TEAM_MEMBERS,
+        "TEAM_MEMBER_CONFIGRATIONS": TEAM_MEMBER_CONFIGRATIONS,
+        # Runtime Variables
+        "messages": [{"role": "user", "content": user_input}],
+        "deep_thinking_mode": True,
+        "search_before_planning": True,
+    }
+    config = {"configurable": {"thread_id": "default"}}
+    result = graph.invoke(input=initial_state, config=config)
     logger.debug(f"Final workflow state: {result}")
     logger.info("Workflow completed successfully")
     return result

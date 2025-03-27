@@ -7,27 +7,27 @@ logger = logging.getLogger(__name__)
 
 def repair_json_output(content: str) -> str:
     """
-    修复和规范化 JSON 输出。
+    Repair and normalize JSON output.
 
     Args:
-        content (str): 可能包含 JSON 的字符串内容
+        content (str): String content that may contain JSON
 
     Returns:
-        str: 修复后的 JSON 字符串，如果不是 JSON 则返回原始内容
+        str: Repaired JSON string, or original content if not JSON
     """
     content = content.strip()
     if content.startswith(("{", "[")) or "```json" in content:
         try:
-            # 如果内容被包裹在```json代码块中，提取JSON部分
+            # If content is wrapped in ```json code block, extract the JSON part
             if content.startswith("```json"):
                 content = content.removeprefix("```json")
 
             if content.endswith("```"):
                 content = content.removesuffix("```")
 
-            # 尝试修复并解析JSON
+            # Try to repair and parse JSON
             repaired_content = json_repair.loads(content)
-            return json.dumps(repaired_content)
+            return json.dumps(repaired_content, ensure_ascii=False)
         except Exception as e:
             logger.warning(f"JSON repair failed: {e}")
     return content

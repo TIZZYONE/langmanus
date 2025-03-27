@@ -41,11 +41,11 @@ BASIC_MODEL:
 
 # An exmaple for slliconflow models
 BASIC_MODEL:
-  model: "openai/Qwen/QwQ-32B"
+  model: "openai/deepseek-ai/DeepSeek-V3"
   api_key: YOU_API_KEY
   api_base: "https://api.siliconflow.cn/v1"
 
-# An exmaple for deepseek models
+# An exmaple for deepseek official models
 BASIC_MODEL:
   model: "openai/deepseek-chat"
   api_key: YOU_API_KEY

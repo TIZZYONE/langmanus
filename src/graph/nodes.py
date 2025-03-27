@@ -1,13 +1,12 @@
 import logging
 import json
-import json_repair
 import logging
 from copy import deepcopy
 from typing import Literal
 from langchain_core.messages import HumanMessage, BaseMessage
 
-import json_repair
 from langchain_core.messages import HumanMessage
+from langchain_core.tools import tool
 from langgraph.types import Command
 
 from src.agents import research_agent, coder_agent, browser_agent
@@ -22,6 +21,14 @@ from .types import State, Router
 logger = logging.getLogger(__name__)
 
 RESPONSE_FORMAT = "Response from {}:\n\n<response>\n{}\n</response>\n\n*Please execute the next step.*"
+
+
+@tool
+def handoff_to_planner():
+    """Handoff to planner agent to do plan."""
+    # This tool is not returning anything: we're just using it
+    # as a way for LLM to signal that it needs to hand off to planner agent
+    return
 
 
 def research_node(state: State) -> Command[Literal["supervisor"]]:
@@ -144,16 +151,9 @@ def planner_node(state: State) -> Command[Literal["supervisor", "__end__"]]:
     logger.debug(f"Current state messages: {state['messages']}")
     logger.debug(f"Planner response: {full_response}")
 
-    if full_response.startswith("```json"):
-        full_response = full_response.removeprefix("```json")
-
-    if full_response.endswith("```"):
-        full_response = full_response.removesuffix("```")
-
     goto = "supervisor"
     try:
-        repaired_response = json_repair.loads(full_response)
-        full_response = json.dumps(repaired_response)
+        full_response = repair_json_output(full_response)
     except json.JSONDecodeError:
         logger.warning("Planner response is not a valid JSON")
         goto = "__end__"
@@ -171,19 +171,16 @@ def coordinator_node(state: State) -> Command[Literal["planner", "__end__"]]:
     """Coordinator node that communicate with customers."""
     logger.info("Coordinator talking.")
     messages = apply_prompt_template("coordinator", state)
-    response = get_llm_by_type(AGENT_LLM_MAP["coordinator"]).invoke(messages)
+    response = (
+        get_llm_by_type(AGENT_LLM_MAP["coordinator"])
+        .bind_tools([handoff_to_planner])
+        .invoke(messages)
+    )
     logger.debug(f"Current state messages: {state['messages']}")
-    response_content = response.content
-    # 尝试修复可能的JSON输出
-    response_content = repair_json_output(response_content)
-    logger.debug(f"Coordinator response: {response_content}")
 
     goto = "__end__"
-    if "handoff_to_planner" in response_content:
+    if len(response.tool_calls) > 0:
         goto = "planner"
-
-    # 更新response.content为修复后的内容
-    response.content = response_content
 
     return Command(
         goto=goto,

@@ -51,7 +51,7 @@ interface Plan {
 - Ensure the plan is clear and logical, with tasks assigned to the correct agent based on their capabilities.
 {% for agent in TEAM_MEMBERS %}
 {% if agent == "browser" %}
-- `browser` is slow and expansive. Use `browser` **only** for tasks requiring **direct interaction** with web pages.
+- `browser` is slow and expensive. Use `browser` **only** for tasks requiring **direct interaction** with web pages.
 - `browser` already delivers comprehensive results, so there is no need to analyze its output further using `researcher`.
 {% elif agent == "coder" %}
 - Always use `coder` for mathematical computations.

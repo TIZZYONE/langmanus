@@ -10,6 +10,8 @@ services:
       - "8000:8000"
     environment:
       - CHROME_HEADLESS=True
+    env_file:
+      - .env
     restart: unless-stopped
     networks:
       - langmanus-network
@@ -19,12 +21,12 @@ services:
       context: https://github.com/langmanus/langmanus-web.git#main
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+        - NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
     container_name: langmanus-frontend
     ports:
       - "3000:3000"
     environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+      - NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
     depends_on:
       - backend
     restart: unless-stopped

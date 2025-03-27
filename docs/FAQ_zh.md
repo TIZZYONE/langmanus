@@ -42,11 +42,11 @@ BASIC_MODEL:
 
 # slliconflow 模型示例
 BASIC_MODEL:
-  model: "openai/Qwen/QwQ-32B"
+  model: "openai/deepseek-ai/DeepSeek-V3"
   api_key: YOU_API_KEY
   api_base: "https://api.siliconflow.cn/v1"
 
-# deepseek 模型示例
+# deepseek 官方模型示例
 BASIC_MODEL:
   model: "openai/deepseek-chat"
   api_key: YOU_API_KEY

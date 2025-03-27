@@ -1,5 +1,5 @@
 from langgraph.graph import StateGraph, START
-
+from langgraph.checkpoint.memory import MemorySaver
 from .types import State
 from .nodes import (
     supervisor_node,
@@ -14,6 +14,11 @@ from .nodes import (
 
 def build_graph():
     """Build and return the agent workflow graph."""
+    # use persistent memory to save conversation history
+    # TODO: be compatible with SQLite / PostgreSQL
+    memory = MemorySaver()
+
+    # build state graph
     builder = StateGraph(State)
     builder.add_edge(START, "coordinator")
     builder.add_node("coordinator", coordinator_node)
@@ -23,4 +28,4 @@ def build_graph():
     builder.add_node("coder", code_node)
     builder.add_node("browser", browser_node)
     builder.add_node("reporter", reporter_node)
-    return builder.compile()
+    return builder.compile(checkpointer=memory)
